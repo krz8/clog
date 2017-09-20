@@ -65,8 +65,8 @@ that helps your editor behave; clog won't care.
 Each file resembles this:
 
     (article
-	title "Great Googly Moogly"
-	desc "Trudging across the tundra, mile after mile."
+        title "Great Googly Moogly"
+        desc "Trudging across the tundra, mile after mile."
         date "2017-09-19 21:34:42")
 
     Well, the fur-trapper stood there, with his arms outstretched
