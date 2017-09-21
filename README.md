@@ -78,3 +78,36 @@ might be specified in the site's config file, but you might have an
 article written by a guest.  In that case, you'd put the usual name into
 the config file, let all the other files inherit it, but in this one
 special bit of content, you'd add an `author` line to its metadata.
+
+First, clog should just walk the content tree, building up a list
+that represents everything found in that tree.  File names can be anything,
+we won't worry about lexigraphical sorting or anything like that.
+The resulting list ought to be something like this
+
+    ((path #P"..." title "..." desc "..." date "..." etc etc)
+
+We'll build up the list by visiting every file, reading the form at the
+top of the file, and concatenating to that the defaults defined in the
+config file.  Duplicate entries then are handled by the semantics of
+ASSOC and friends, so the file can easily override the defaults and
+so on.
+
+We should have some kind of updater that cleans up every entry in the list.
+For example, it should probably
+
+  - Nuke newlines and other crap from title and desc lines.
+  - Parse and replace date strings with actual universal time objects.
+  - Insert strings indicating the destination file (relative to site).
+
+Typically, then, this list can be sorted according to the DATE
+parameter, et voila, you have an index page.
+
+Right now we'll just use associative lists.  Do you think we'll need
+hashes in the future?  Nah.  If speed becomes an issue, then the right
+answer is DEFSTRUCT (no, not even DEFCLASS).  But right now, I like
+the flexibility of a simple list.
+
+Makes sense to use property lists instead of an assoc list for each
+content.  This way, more natural forms can be written in the content
+and config with conversion.  Well, okay, not property lists really;
+we'll use plain/simple lists that we manipulate with getf/setf.

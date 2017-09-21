@@ -2,7 +2,7 @@
     title "Performance and Types in Lisp"
     desc "Part 1 about using numeric types in your Lisp code for
           robustness and speed."
-    date "2014-03-21 12:00:00 -04:00")
+    date "2014-03-21 12:00:00-04:00")
 
 Some time ago, a few friends of mine encouraged me to write some posts
 about Lisp: why I enjoy developing in it, what sets it apart from
