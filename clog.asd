@@ -5,5 +5,6 @@
 
     :depends-on ("iterate" "cl-fad" "cl-date-time-parser")
     :components ((:file "pkg")
-		 (:file "walk" :depends-on ("pkg"))
-		 (:file "main" :depends-on ("pkg"))))
+		 (:file "util" :depends-on ("pkg"))
+		 (:file "walk" :depends-on ("util"))
+		 (:file "main" :depends-on ("util"))))

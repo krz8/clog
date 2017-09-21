@@ -1,18 +1,5 @@
 (in-package #:clog)
 
-(defmacro awhen (test &body body)
-  "With IT bound to the value of TEST, BODY is evaluated when IT is
-non-nil."
-  `(let ((it ,test))
-     (when it
-       ,@body)))
-
-(defmacro aif (test when-true when-false)
-  "With IT bound to the value of TEST, WHEN-TRUE or WHEN-FALSE is
-evaluated accordingly."
-  `(let ((it ,test))
-     (if it ,when-true ,when-false)))
-
 (defparameter *config* '(author "Bob Krzaczek"
 			 email "Robert.Krzaczek@gmail.com")
   "Pretends to be the defaults read out of a config file.  When I
@@ -63,34 +50,6 @@ a fallback, finding the last time the PATH in META was written.
 			  (date-time-parser:parse-date-time it)
 			  (file-write-date (getf meta 'path))))
 	 meta))
-
-(defun string-tidy (rep-char char-bag string)
-  "Return a new string whose contents are based on STRING, except that
-any instance of one or more of the characters in CHAR-BAG are replaced
-by a single REP-CHAR, and all instances of characters in CHAR-BAG
-appearing at the beginning or end of STRING are removed.  STRING-TIDY
-can be thought of as a more aggressive version of STRING-TRIM, but the
-returned string shares no data with the supplied STRING."
-  (with-output-to-string (s)
-    (let ((skipping nil))
-      (map nil #'(lambda (ch)
-		   (cond
-		     ((find ch char-bag)
-		      (unless skipping
-			(princ rep-char s)
-			(setf skipping t)))
-		     (t (princ ch s)
-			(setf skipping nil))))
-	   (string-trim char-bag string)))))
-
-(defparameter *whitespace*
-  (concatenate 'string '(#\Space #\Tab #\Newline #\U+000B #\Page #\Return
-			 #\U+0085 #\U+00A0 #\U+1680 #\U+2000 #\U+2001
-			 #\U+2002 #\U+2003 #\U+2004 #\U+2005 #\U+2006
-			 #\U+2007 #\U+2008 #\U+2009 #\U+200A #\U+2028
-			 #\U+2029 #\U+202F #\U+205F #\U+3000))
-  "A string containing characters we understand to be whitespace, per
-Unicode 10.0.")
 
 (defun fix-desc (meta)
   "Maybe adds a new DESC at the front of META, the property list
