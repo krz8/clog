@@ -1,11 +1,15 @@
 (in-package #:clog)
 
 (defmacro awhen (test &body body)
+  "With IT bound to the value of TEST, BODY is evaluated when IT is
+non-nil."
   `(let ((it ,test))
      (when it
        ,@body)))
 
 (defmacro aif (test when-true when-false)
+  "With IT bound to the value of TEST, WHEN-TRUE or WHEN-FALSE is
+evaluated accordingly."
   `(let ((it ,test))
      (if it ,when-true ,when-false)))
 
@@ -31,6 +35,22 @@ the configuration defaults; the first one found always works.
       (nconc (list 'path pathname 'type filetype)
 	     fileattrs
 	     *config*))))
+
+(defun add-fmt (meta)
+  "Given META, a property list describing an item in discovered in a
+content tree, return a new list that includes an attribute FMT whose
+value is a symbol indicating the format that the source material is
+in (e.g., MARKDOWN)."
+  (let ((ext (string-downcase (pathname-type (getf meta 'path)))))
+    (nconc (list 'fmt
+		 (cond
+		   ((string= ext "md") 'markdown)
+		   ((string= ext "adoc") 'asciidoc)
+		   ((string= ext "txt") 'plaintext)
+		   ((string= ext "html") 'html)
+		   ((string= ext "org") 'org)
+		   (t 'unknown)))
+	   meta)))
 
 (defun fix-time (meta)
   "Adds a new DATE at the front of META, the property list containing
@@ -97,7 +117,7 @@ composition.
     (mapc #'(lambda (fn) (setq x (funcall fn x))) funclist)
     x))
 
-(defparameter *content-tweaks* '(fix-desc fix-time)
+(defparameter *content-tweaks* '(fix-desc fix-time add-fmt)
   "A list of function designators that will be called for each
 property list describing files discovered in the content tree (as
 returned by DISCOVER-CONTENT).  Each property list contains metadata
