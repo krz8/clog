@@ -67,3 +67,23 @@ other conditions."
     (if (find it *whitespace*)
 	(read-char stream nil nil)	; thrown away, skipping *whitespace*
 	(return-from nil it))))
+
+;; Many thanks to Ron Garret (whose posts I used to follow as Erann
+;; Gat :-) for inspiring this macro below.  When using SBCL, it's not
+;; so bad, but when on CCL, wow, WITH-OUTPUT-TO-STRING hurts!  What on
+;; earth am I doing wrong when calling it?  Well, we can adopt this
+;; slightly different paradigm instead and regain some performance.
+
+(defmacro collect-to-string ((fname) &body body)
+  "Return a string whose value is a concatentation of all the characters
+passed to FNAME in the body forms.
+   (COLLECT-TO-STRING (str)
+     (dolist (c '(#\\h #\\e #\\l #\\l #\\o #\\Space #\\w #\\o #\\r #\\l #\\d))
+       (str c)))
+=> \"hello world\""
+  (let ((char (gensym)) (string (gensym)))
+    `(let ((,string (make-array 0 :element-type 'character :adjustable t
+				:fill-pointer 0)))
+       (flet ((,fname (,char) (vector-push-extend ,char ,string)))
+	 ,@body)
+       ,string)))
