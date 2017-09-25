@@ -20,9 +20,9 @@ But, truly, what's in a name?
 Since my friend Patrick made a few comments, I've been looking at ways
 to bundle this into a distributable executable.  I think we've got it,
 using Roswell in this capacity.  I'm going to push it a little bit,
-and develop under Windows 10 with CCL, instead of the more usual Linux
-+ SBCL.  FreeBSD was always my primary OS in the past (especially when
-I was a LispWorks user), but these days I'm relegated to Windows;
+and develop under Windows 10 with CCL, instead of the more usual
+Linux+SBCL.  FreeBSD was always my primary OS in the past (especially
+when I was a LispWorks user), but these days I'm relegated to Windows;
 sigh.  Besides, I think it'll be a nice portability push to make this
 work under Windows.
 
