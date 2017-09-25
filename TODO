@@ -1,0 +1,11 @@
+TODO
+----
+
+Stop using CL-FAD.  Use UIOP.
+
+Look at integrating Woo, leads to something comparable to
+"hugo server" for preview.  Or, better yet, use Clack with
+a Woo implementation.
+
+Use keywords instead of plain symbols in property lists.  Bring in
+trivial-types, and then be more explicit with those property lists.
